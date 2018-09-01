@@ -1,0 +1,29 @@
+<html>
+<body>
+  <script>
+    var init;
+
+    function checkState(clientId, origin, sessionState, callback) {
+      callback('unchanged');
+    }
+
+    function receiveMessage(event) {
+      var origin = event.origin;
+      var data = event.data.split(' ');
+      if (data.length != 2) {
+        return;
+      }
+
+      var clientId = data[0];
+      var sessionState = data[1];
+
+      checkState(clientId, event.origin, sessionState, function (result) {
+        event.source.postMessage(result, origin);
+      });
+    }
+
+    window.addEventListener("message", receiveMessage, false);
+  </script>
+</body>
+
+</html>
